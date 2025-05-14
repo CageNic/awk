@@ -1078,6 +1078,93 @@ THE X-Files season9   USA            2001             DVD
 
 # header plus pattern "season"
 
+#########################################################
+
+###################
+# awk sum columns #
+###################
+
+Input file:
+
+$ cat file.txt
+==============
+500:120:100
+100:120:700
+200:900:125
+120:120:900
+==============
+
+# Required:
+# Compute the sum of individual columns of the above file. i.e. required output:
+
+920:1260:1825
+==============================================================================
+
+## Awk solution - 1:
+
+$ awk 'BEGIN {FS=OFS=":"}
+
+  NR == 1 { n1 = $1; n2 = $2; n3 = $3;  next }
+    
+          { n1 += $1; n2 += $2; n3 += $3 }
+          
+            END { print n1, n2, n3 }' file.txt
+
+# Output:
+# 920:1260:1825
+
+#---------------------------------------------------------------------------------
+## Awk solution - 2:
+
+$ awk 'BEGIN FS=":"}
+
+{ for (i=1; i<=NF; ++i) sum[i] += $i }
+
+           END { for (i=1; i <= NF; ++i) printf "%s ", sum[i]; printf "\n"; }
+           ' file.txt
+
+# Output:
+920 1260 1825
+
+#===============================================================================
+
+# Sum numbers in each row - awk
+
+# Input file contains the scores of few students in certain rounds of a game in the following format.
+
+id,Name,score1,score2,score3 etc
+================================
+
+$ cat file.txt
+=============================
+id9,Mohit Kishore,19,13,14,10
+id2,Niraj Kumar,13,8,23,8
+id8,Kate Nil,19,18,15
+id4,Rashi S,19,28,65,10,19
+=============================
+
+# Required output:
+
+# Calculate the sum and average score of each student (notice that the number of rounds played by each student is not constant, few played 3 rounds, few 4 etc)
+
+# The awk script:
+
+$ awk '
+BEGIN {FS=OFS=","}
+{
+sum=0; n=0
+for(i=3;i<=NF;i++)
+     {sum+=$i; ++n}
+     print $0,"sum:"sum,"count:"n,"avg:"sum/n
+}' file.txt
+=============================================
+Output:
+
+id9,Mohit Kishore,19,13,14,10,sum:56,count:4,avg:14
+id2,Niraj Kumar,13,8,23,8,sum:52,count:4,avg:13
+id8,Kate Nil,19,18,15,sum:52,count:3,avg:17.3333
+id4,Rashi S,19,28,65,10,19,sum:141,count:5,avg:28.2
+
 
 
 
