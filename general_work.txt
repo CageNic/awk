@@ -535,7 +535,9 @@ awk 2 dimensional array
                        
                        arrayname    indices   value
 
-The following program illustrates how you can use a two dimensional array in awk. Assume the first field of each input record contains a product number, the second field contains a month number, and the third field contains a quantity (bought, sold, or whatever). The program generates a table of products versus month.
+The following program illustrates how you can use a two dimensional array in awk
+Assume the first field of each input record contains a product number, the second field contains a month number, and the third field contains a quantity (bought, sold, or whatever)
+The program generates a table of products versus month.
 
 can output to an open office file using tab as delimiter
 
