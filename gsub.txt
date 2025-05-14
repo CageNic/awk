@@ -1,0 +1,5 @@
+# nullify (replace) the dash on first column
+awk '{gsub(/-/,"",$1);print}' file
+
+# replace CA with ca on first column
+awk '{gsub(/CA/,"ca",$1);print}' file
