@@ -1,4 +1,4 @@
-### Common threads: Awk by example, Part 1  
+## Common threads: Awk by example, Part 1  
 ### In defense of awk  
 In this series of articles, I'm going to turn you into a proficient awk coder. I'll admit, awk doesn't have a very pretty or particularly "hip" name, and the GNU version of awk, called gawk, sounds downright weird. Those unfamiliar with the language may hear "awk" and think of a mess of code so backwards and antiquated that it's capable of driving even the most knowledgeable UNIX guru to the brink of insanity (causing him to repeatedly yelp "kill -9!" as he runs for coffee machine). 
 Sure, awk doesn't have a great name. But it is a great language. Awk is geared toward text processing and report generation, yet features many well-designed features that allow for serious programming. And, unlike some languages, awk's syntax is familiar, and borrows some of the best parts of languages like C, python, and bash (although, technically, awk was created before both python and bash). Awk is one of those languages that, once learned, will become a key part of your strategic coding arsenal.
@@ -159,7 +159,7 @@ Awk also allows the use of boolean operators "||" (for "logical or") and "&&"(fo
 ```
 ( $1 == "foo" ) && ( $2 == "bar" ) { print } 
 ```
-This example will print only those lines where field one equals foo and field two equals bar.  
+This example will print only those lines where field one equals foo and field two equals bar   
 
 ### Numeric variables!  
 So far, we've either printed strings, the entire line, or specific fields. However, awk also allows us to perform both integer and floating point math. Using mathematical expressions, it's very easy to write a script that counts the number of blank lines in a file  
@@ -170,74 +170,92 @@ BEGIN { x=0 }
 END   { print "I found " x " blank lines. :)" } 
 ```
 In the BEGIN block, we initialize our integer variable x to zero. Then, each time awk encounters a blank line, awk will execute the x=x+1 statement, incrementing x. After all the lines have been processed, the END block will execute, and awk will print out a final summary, specifying the number of blank lines it found    
-Stringy variables
-One of the neat things about awk variables is that they are "simple and stringy." I consider awk variables "stringy" because all awk variables are stored internally as strings. At the same time, awk variables are "simple" because you can perform mathematical operations on a variable, and as long as it contains a valid numeric string, awk automatically takes care of the string-to-number conversion steps. To see what I mean, check out this example:
+### Stringy variables  
+One of the neat things about awk variables is that they are "simple and stringy."  
+I consider awk variables "stringy" because all awk variables are stored internally as strings  
+At the same time, awk variables are "simple" because you can perform mathematical operations on a variable, and as long as it contains a valid numeric string, awk automatically takes care of the string-to-number conversion steps  
+To see what I mean, check out this example:  
+```
 x="1.01" 
 # We just set x to contain the *string* "1.01" 
 x=x+1 
 # We just added one to a *string* 
 print x 
 # Incidentally, these are comments :) 
-
+```
+```
 Awk will output:
 2.01
-
-Interesting! Although we assigned the string value 1.01 to the variable x, we were still able to add one to it. We wouldn't be able to do this in bash or python. First of all, bash doesn't support floating point arithmetic. And, while bash has "stringy" variables, they aren't "simple"; to perform any mathematical operations, bash requires that we enclose our math in an ugly $( ) construct. If we were using python, we would have to explicitly convert our 1.01 string to a floating point value before performing any arithmetic on it. While this isn't difficult, it's still an additional step. With awk, it's all automatic, and that makes our code nice and clean. If we wanted to square and add one to the first field in each input line, we would use this script:
+```
+Interesting! Although we assigned the string value 1.01 to the variable x, we were still able to add one to it. We wouldn't be able to do this in bash or python  
+First of all, bash doesn't support floating point arithmetic. And, while bash has "stringy" variables, they aren't "simple"; to perform any mathematical operations, bash requires that we enclose our math in an ugly $( ) construct  
+If we were using python, we would have to explicitly convert our 1.01 string to a floating point value before performing any arithmetic on it  
+While this isn't difficult, it's still an additional step. With awk, it's all automatic, and that makes our code nice and clean  
+If we wanted to square and add one to the first field in each input line, we would use this script:  
+```
 { print ($1^2)+1 } 
+```
+If you do a little experimenting, you'll find that if a particular variable doesn't contain a valid number, awk will treat that variable as a numerical zero when it evaluates your mathematical expression  
 
-If you do a little experimenting, you'll find that if a particular variable doesn't contain a valid number, awk will treat that variable as a numerical zero when it evaluates your mathematical expression. 
-________________________________________
-Lots of operators
-Another nice thing about awk is its full complement of mathematical operators. In addition to standard addition, subtraction, multiplication, and division, awk allows us to use the previously demonstrated exponent operator "^", the modulo (remainder) operator "%", and a bunch of other handy assignment operators borrowed from C. 
-These include pre- and post-increment/decrement ( i++, --foo ), add/sub/mult/div assign operators ( a+=3, b*=2, c/=2.2, d-=6.2 ). But that's not all -- we also get handy modulo/exponent assign ops as well ( a^=2, b%=4 ). 
-________________________________________
-Field separators
-Awk has its own complement of special variables. Some of them allow you to fine-tune how awk functions, while others can be read to glean valuable information about the input. We've already touched on one of these special variables, FS. As mentioned earlier, this variable allows you to set the character sequence that awk expects to find between fields. When we were using /etc/passwd as input, FS was set to ":". While this did the trick, FS allows us even more flexibility. 
-The FS value is not limited to a single character; it can also be set to a regular expression, specifying a character pattern of any length. If you're processing fields separated by one or more tabs, you'll want to set FS like so:
+### Lots of operators
+Another nice thing about awk is its full complement of mathematical operators  
+In addition to standard addition, subtraction, multiplication, and division, awk allows us to use the previously demonstrated exponent operator "^", the modulo (remainder) operator "%", and a bunch of other handy assignment operators borrowed from C  
+These include pre- and post-increment/decrement ( i++, --foo ), add/sub/mult/div assign operators ( a+=3, b*=2, c/=2.2, d-=6.2 )  
+But that's not all -- we also get handy modulo/exponent assign ops as well ( a^=2, b%=4 )  
+
+### Field separators
+Awk has its own complement of special variables. Some of them allow you to fine-tune how awk functions, while others can be read to glean valuable information about the input. We've already touched on one of these special variables, FS  
+As mentioned earlier, this variable allows you to set the character sequence that awk expects to find between fields. When we were using /etc/passwd as input, FS was set to ":"  
+While this did the trick, FS allows us even more flexibility  
+The FS value is not limited to a single character; it can also be set to a regular expression, specifying a character pattern of any length. If you're processing fields separated by one or more tabs, you'll want to set FS like so:  
+```
 FS="\t+" 
-
+```
 Above, we use the special "+" regular expression character, which means "one or more of the previous character". 
-If your fields are separated by whitespace (one or more spaces or tabs), you may be tempted to set FS to the following regular expression:
+If your fields are separated by whitespace (one or more spaces or tabs), you may be tempted to set FS to the following regular expression:  
+```
 FS="[[:space:]+]" 
-
-While this assignment will do the trick, it's not necessary. Why? Because by default, FS is set to a single space character, which awk interprets to mean "one or more spaces or tabs." In this particular example, the default FS setting was exactly what you wanted in the first place! 
-Complex regular expressions are no problem. Even if your records are separated by the word "foo," followed by three digits, the following regular expression will allow your data to be parsed properly:
+```
+While this assignment will do the trick, it's not necessary  
+Why?  
+Because by default, FS is set to a single space character, which awk interprets to mean "one or more spaces or tabs." In this particular example, the default FS setting was exactly what you wanted in the first place! 
+Complex regular expressions are no problem. Even if your records are separated by the word "foo," followed by three digits, the following regular expression will allow your data to be parsed properly:  
+```
 FS="foo[0-9][0-9][0-9]" 
-
-________________________________________
-Number of fields
-The next two variables we're going to cover are not normally intended to be written to, but are normally read and used to gain useful information about the input. The first is the NF variable, also called the "number of fields" variable. Awk will automatically set this variable to the number of fields in the current record. You can use the NF variable to display only certain input lines:
+```
+### Number of fields
+The next two variables we're going to cover are not normally intended to be written to, but are normally read and used to gain useful information about the input  
+The first is the NF variable, also called the "number of fields" variable. Awk will automatically set this variable to the number of fields in the current record  
+You can use the NF variable to display only certain input lines:  
+```
 NF == 3 { print "this particular record has three fields: " $0 } 
-
-Of course, you can also use the NF variable in conditional statements, as follows:
+```
+Of course, you can also use the NF variable in conditional statements, as follows:  
+```
 { 
   if ( NF > 2 ) { 
           print $1 " " $2 ":" $3 
   } 
 } 
-
-________________________________________
-Record number
-The record number (NR) is another handy variable. It will always contain the number of the current record (awk counts the first record as record number 1). Up until now, we've been dealing with input files that contain one record per line. For these situations, NR will also tell you the current line number. However, when we start to process multi-line records later in the series, this will no longer be the case, so be careful! NR can be used like the NF variable to print only certain lines of the input:
+```
+### Record number
+The record number (NR) is another handy variable. It will always contain the number of the current record (awk counts the first record as record number 1)  
+Up until now, we've been dealing with input files that contain one record per line. For these situations, NR will also tell you the current line number  
+However, when we start to process multi-line records later in the series, this will no longer be the case, so be careful! NR can be used like the NF variable to print only certain lines of the input:  
+```
 (NR < 10 ) || (NR > 100) { print "We are on record number 1-9 or 101+" } 
-
-Another example:
+```
+Another example:  
+```
 { 
   #skip header 
   if ( NR > 10 ) { 
           print "ok, now for the real information!" 
   } 
 } 
-
-
-
-
-
-
-
-
-Common threads: Awk by example, Part 2
-Multi-line records
+```
+## Common threads: Awk by example, Part 2
+### Multi-line records
 Awk is an excellent tool for reading in and processing structured data, such as the system's /etc/passwd file. /etc/passwd is the UNIX user database, and is a colon-delimited text file, containing a lot of important information, including all existing user accounts and user IDs, among other things. In my previous article, I showed you how awk could easily parse this file. All we had to do was to set the FS (field separator) variable to ":".
 By setting the FS variable correctly, awk can be configured to parse almost any kind of structured data, as long as there is one record per line. However, just setting FS won't do us any good if we want to parse a record that exists over multiple lines. In these situations, we also need to modify the RS record separator variable. The RS variable tells awk when the current record ends and a new record begins.
 As an example, let's look at how we'd handle the task of processing an address list of Federal Witness Protection Program participants:
