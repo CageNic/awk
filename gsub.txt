@@ -3,3 +3,14 @@ awk '{gsub(/-/,"",$1);print}' file
 
 # replace CA with ca on first column
 awk '{gsub(/CA/,"ca",$1);print}' file
+
+# replace double space with single space on all columns
+awk '{gsub("    "," ");print}' file
+
+# same as... 
+awk '{gsub("    "," ",$0);print}' file
+
+# same as (instead of a semi colon separating the command and the print statement
+# close the command with } so the command is in {} and have the print statement in its own {}
+awk '{gsub("    "," ",$0)} {print}' file
+
