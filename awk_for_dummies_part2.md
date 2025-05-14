@@ -36,3 +36,18 @@ cat coins.awk
          printf ("\n");
          printf ("   Total number of pieces: %2d\n", NR);
          printf ("   Value of collection: %7.2f\n", total); }
+
+############
+# produces #
+############
+Gold pieces:                    9
+Weight of gold pieces:          6.10
+Value of gold pieces:        2958.50
+
+Silver pieces:                  4
+Weight of silver pieces:       12.50
+Value of silver pieces:       200.00
+
+Total number of pieces:        13
+Value of collection:         3158.50
+
