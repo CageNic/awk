@@ -970,4 +970,114 @@ END       {print "=========================================="      >> "British_f
 # END {for (i in hammer)
 #     print "there are", hammer[i] , "Hammer films"
 #   }
+#############################################################################################################
+
+
+#############################
+# awk to remove blank lines #
+#############################
+
+awk to remove blank lines as per sed '/^$/d' and grep -v ^$
+
+cat file1
+
+=============================
+this is a line
+and another line
+
+more lines
+
+and here
+and there
+
+here is a nice line
+=============================
+
+# set awk FS to tab so that each sentence is a field, and not each word is a field (separated by default space)
+
+awk 'BEGIN {FS="\t"}{c=NF; print c}' file1   # giving the NF variable a user defined variable
+==========================================
+1
+1
+0
+1
+0
+1
+1
+0
+1
+
+# or
+
+awk 'BEGIN {FS="\t"}{print NF}' file1       # not giving the NF variable a user defined variable
+======================================
+1
+1
+0
+1
+0
+1
+1
+0
+1
+
+
+# so any line where there are no fields is a blank line
+# therefore
+# to count non blank lines                        
+
+awk 'BEGIN {FS="\t"} NF != 0 {nonblanks++} END {print nonblanks}' file1
+=========================================================================
+6
+
+# to count blank lines
+
+awk 'BEGIN {FS="\t"} NF == 0 {blanks++} END {print blanks}' file1
+=================================================================
+3
+
+# to remove blank lines
+
+awk 'BEGIN {FS="\t"} NF != 0 {print}' file1
+===========================================
+
+this is a line
+and another line
+more lines
+and here
+and there
+here is a nice line
+
+######################################################################
+
+##########################################################################
+# awk print only the header - and only the header with a matched pattern #
+##########################################################################
+
+# code to print the header only
+
+awk 'BEGIN {FS="\t"}NR <2 {print}' xfiles.csv
+
+TITLE		COUNTRY            YEAR          FORMAT
+
+# add the code to print what comes after the header
+
+awk 'BEGIN {FS="\t"}NR <2 {print}
+$1~/season/ {print}' xfiles.csv
+
+TITLE		      COUNTRY        YEAR             FORMAT
+THE X-Files season1   USA            1993             DVD
+THE X-Files season2   USA            1994             DVD
+THE X-Files season3   USA            1995             DVD
+THE X-Files season4   USA            1996             DVD
+THE X-Files season5   USA            1997             DVD
+THE X-Files season6   USA            1998             DVD
+THE X-Files season7   USA            1999             DVD
+THE X-Files season8   USA            2000             DVD
+THE X-Files season9   USA            2001             DVD
+
+# header plus pattern "season"
+
+
+
 
