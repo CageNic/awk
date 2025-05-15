@@ -1164,6 +1164,30 @@ id9,Mohit Kishore,19,13,14,10,sum:56,count:4,avg:14
 id2,Niraj Kumar,13,8,23,8,sum:52,count:4,avg:13
 id8,Kate Nil,19,18,15,sum:52,count:3,avg:17.3333
 id4,Rashi S,19,28,65,10,19,sum:141,count:5,avg:28.2
+##########################################################
+
+###############
+# parentheses #
+###############
+
+# parentheses are used to group options together
+
+/(blue|black)bird/   { print $0 } 
+$2 ~ /(blue|black)bird/   { print $0 }
+#########################################################
+
+################################################
+# using a variable to declare a search pattern #
+################################################
+
+# needs BEGIN
+
+BEGIN  { matchstr = /(blue|black)bird/ } 
+        $2  ~  matchstr  { print $0 }
+################################################
+
+
+
 
 
 
