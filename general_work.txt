@@ -1192,6 +1192,39 @@ BEGIN  { matchstr = /(blue|black)bird/ }
 
 awk 'BEGIN {IGNORECASE=1} /pattern/ {print}'
 
+##############################################
+
+###########################################
+# awk create a variable applied to substr #
+# use gsub on that substr                 #
+###########################################
+      
+
+cat andyc
+			
+/* this is q802o
+if (c(101,105).eq.00261)emit c1612'9';emit c1608'9';emit c1609'9';emit c1610'2';emit c1611'9';
+===============================
+
+awk '{qidserial=substr($0,1,24)
+        code1=substr($0,25,14)
+        code2=substr($0,39,14)
+gsub (/c16/,"c26",code2)
+        code3=substr($0,53,14)
+gsub (/c16/,"c36",code3)
+        code4=substr($0,67,14)
+gsub (/c16/,"c46",code4)
+        code5=substr($0,81,14)
+gsub (/c16/,"c56",code5)
+       print qid serials code1 code2 code3 code4 code5
+}' andyc
+
+# produces
+
+/* this is q802o
+if (c(101,105).eq.00261)emit c1612'9';emit c2608'9';emit c3609'9';emit c4610'2';emit c5611'9';
+###############################################################################################
+
 
 
 
