@@ -1186,6 +1186,12 @@ BEGIN  { matchstr = /(blue|black)bird/ }
         $2  ~  matchstr  { print $0 }
 ################################################
 
+##################
+# awk ignorecase #
+##################
+
+awk 'BEGIN {IGNORECASE=1} /create/ {print}'
+
 
 
 
